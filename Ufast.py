@@ -9,6 +9,8 @@ class TypingSpeedTest:
 	def __init__(self, root):
 		self.root = root
 		self.root.title("Typing Speed Test")
+		self.root.config(bg="#8b008b")
+		
 		try:
 			self.root.iconbitmap("pics/my_nick_name.ico")
 		except:
@@ -50,7 +52,7 @@ class TypingSpeedTest:
 		title = Label(self.root, text="Typing Speed Test", bg="#ff0000", relief=SUNKEN)
 		title.grid(row=0, column=0, columnspan=3, pady=(10, 10), sticky="ew")
 		
-		level_label = Label(self.root, text="Choose the level you want to practice!")
+		level_label = Label(self.root, text="Choose the level you want to practice!",bg="#bdb76b")
 		level_label.grid(row=1, column=0, columnspan=3, pady=(0, 20))
 
 		levels = [("Easy", "Easy"), ("Medium", "Medium"), ("Hard", "Hard")]
@@ -59,11 +61,12 @@ class TypingSpeedTest:
 				self.root, 
 				text=text, 
 				variable=self.level_var, 
-				value=level
+				value=level,
+				bg="#bdb76b"
 			)
 			rb.grid(row=i+2, column=0, columnspan=3, sticky="w", padx=100)
 
-		start_btn = Button(self.root, text="Start", command=self.start_game)
+		start_btn = Button(self.root, text="Start",bg="#ff8c00", command=self.start_game)
 		start_btn.grid(row=5, column=0, columnspan=3, pady=20)
 
 	def setup_game_screen(self):
@@ -98,13 +101,14 @@ class TypingSpeedTest:
 		self.submit_btn.grid(row=3, column=1, columnspan=3, padx=10, pady=10)
 		
 		# Theme buttons
-		self.theme_frame = Frame(self.root)
-		self.theme_frame.grid(row=4, column=0, columnspan=3, pady=10)
-		
-		Button(self.theme_frame, text="Yellow", bg="#ffff00", command=lambda: self.root.config(bg="yellow")).grid(row=5,column=1,padx=(60,2))
-		Button(self.theme_frame, text="White", bg="#ffffff", command=lambda: self.root.config(bg="white")).grid(row=5, column=2)
-		Button(self.theme_frame, text="Restart", bg="#c0c0c0", command=self.restart_game).grid(row=5, column=3)
-		Button(self.theme_frame, text="Exit",bg="#ff0000", command=self.root.destroy).grid(row=5, column=4)
+		self.btn_yellow = Button(self.root, text="Yellow", bg="#ffff00",fg="#8b008b", command=lambda: self.root.config(bg="yellow"))
+		self.btn_yellow.grid(row=5,column=0,padx=(70,2))
+		self.btn_white = Button(self.root, text="White", bg="#ffffff", command=lambda: self.root.config(bg="white"))
+		self.btn_white.grid(row=5, column=1)
+		self.btn_restart = Button(self.root, text="Restart", bg="#c0c0c0", command=self.restart_game)
+		self.btn_restart.grid(row=5, column=2)
+		self.btn_exit = Button(self.root, text="Exit",bg="#ff0000", command=self.root.destroy)
+		self.btn_exit.grid(row=5, column=3)
 
 	def update_timer(self):
 		"""Update the running timer display"""
@@ -116,7 +120,7 @@ class TypingSpeedTest:
 		except:
 			pass
 			
-	def check_typing(self):
+	def check_typing(self,event=None):
 		"""Evaluate user's typing performance"""
 		user_text = self.user_input.get().strip()
 		if not user_text:
@@ -137,7 +141,7 @@ class TypingSpeedTest:
 		self.clear_screen()
 		self.root.geometry('300x300')
 		
-		Label(self.root, text="Results", font=("Arial", 19, "bold")).grid(padx=(100, 10))
+		Label(self.root, text="Results", font=("Arial", 19, "bold")).grid(padx=(100, 10), pady=(10,0))
 		
 		result_label = Label(self.root, text=result, justify=LEFT)
 		result_label.grid(padx=(100,0),pady=(30,10))
@@ -167,14 +171,13 @@ class TypingSpeedTest:
 	def size_decide(self):
 		# ~ this function controls the geometry size and padding according to option choosen
 		if self.level_var.get() == "Easy":
-			self.root.geometry('274x220')
+			self.root.geometry('374x220')
 			# Timer display
 			self.timer_label = Label(self.root, text="00:00", bg="#000000", fg="#ffffff",font=("Arial", 14, "bold"))
-			self.timer_label.grid(row=0, column=0, columnspan=3, padx=(45,0), pady=10, sticky="ew")
-			self.challenge.grid(row=1, column=0, columnspan=3, padx=(45,0), pady=10, sticky="ew")
-			self.user_input.grid(row=2, column=0, columnspan=3, padx=(45,0), pady=10, sticky="ew")
-			self.submit_btn.grid(row=3, column=0, columnspan=3, padx=(45,0), pady=10)
-			self.theme_frame.grid(row=4, column=0, columnspan=3, pady=10)
+			self.timer_label.grid(row=0, column=0, columnspan=3, padx=(125,20), pady=10, sticky="ew")
+			self.challenge.grid(row=1, column=0, columnspan=3, padx=(125,10), pady=10, sticky="ew")
+			self.user_input.grid(row=2, column=1, columnspan=3, padx=(2,40), pady=10, sticky="ew")
+			self.submit_btn.grid(row=3, column=0, columnspan=3, padx=(95,0), pady=10)
 			self.update_timer()
 			
 		elif self.level_var.get() == "Medium":
@@ -184,8 +187,11 @@ class TypingSpeedTest:
 			self.timer_label.grid(row=0, column=0, columnspan=3, padx=(50,0), pady=10, sticky="ew")
 			self.challenge.grid(row=1, column=0, columnspan=3, padx=(45,0), pady=10, sticky="ew")
 			self.user_input.grid(row=2, column=0, columnspan=3, padx=(45,0), pady=10, sticky="ew")
-			self.submit_btn.grid(row=3, column=0, columnspan=3, padx=(45,0), pady=10)
-			self.theme_frame.grid(row=4, column=0, columnspan=3, pady=10)
+			self.submit_btn.grid(row=3, column=0, columnspan=3, padx=(25,0), pady=10)
+			self.btn_yellow.grid(row=5,column=0,padx=(15,2))
+			self.btn_white.grid(row=5, column=1)
+			self.btn_restart.grid(row=5, column=2)
+			self.btn_exit.grid(row=5, column=3,padx=(10,0))
 			self.update_timer()
 			
 		else:
@@ -195,8 +201,11 @@ class TypingSpeedTest:
 			self.timer_label.grid(row=0, column=0, columnspan=3, padx=(50,0), pady=10, sticky="ew")
 			self.challenge.grid(row=1, column=0, columnspan=3, padx=(45,0), pady=10, sticky="ew")
 			self.user_input.grid(row=2, column=0, columnspan=3, padx=(45,0), pady=10, sticky="ew")
-			self.submit_btn.grid(row=3, column=0, columnspan=3, padx=(45,0), pady=10)
-			self.theme_frame.grid(row=4, column=0, columnspan=3, pady=10)
+			self.submit_btn.grid(row=3, column=0, columnspan=3, padx=(25,0), pady=10)
+			self.btn_yellow.grid(row=5,column=0,padx=(15,2))
+			self.btn_white.grid(row=5, column=1)
+			self.btn_restart.grid(row=5, column=2)
+			self.btn_exit.grid(row=5, column=3,padx=(10,0))
 			self.update_timer()
 
 	def start_game(self, event=None):
@@ -204,7 +213,7 @@ class TypingSpeedTest:
 		self.root.geometry('474x320')
 		self.setup_game_screen()
 		self.size_decide()
-	
+		self.root.bind("<Return>",self.check_typing)
 if __name__ == "__main__":
     
     app = TypingSpeedTest(root)
